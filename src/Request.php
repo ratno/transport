@@ -5,12 +5,14 @@ namespace Ratno\Transport;
 class Request
 {
     protected $client_id;
+    protected $base_url;
     protected $key;
     protected $secret;
 
-    function __construct($client_id, $client_secret, $access_token = "", $access_token_secret = "")
+    function __construct($client_id, $client_secret, $base_url, $access_token = "", $access_token_secret = "")
     {
         $this->client_id = $client_id;
+        $this->base_url = $base_url;
 
         if($access_token && $access_token_secret) {
             $this->key = $access_token;
@@ -56,13 +58,13 @@ class Request
         return $result->getBody()->getContents();
     }
 
-    public function get($url,$request_params = [])
+    public function get($endpoint_url,$request_params = [])
     {
-        return $this->call("GET",$url,$request_params);
+        return $this->call("GET", $this->base_url . $endpoint_url, $request_params);
     }
 
-    public function post($url,$request_params = [])
+    public function post($endpoint_url,$request_params = [])
     {
-        return $this->call("POST",$url,$request_params);
+        return $this->call("POST", $this->base_url . $endpoint_url, $request_params);
     }
 }
