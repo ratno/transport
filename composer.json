@@ -1,0 +1,17 @@
+{
+    "name": "ratno/transport",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "authors": [
+        {
+            "name": "ratno putro sulistiyono",
+            "email": "ratno@knoqdown.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ratno\\Transport\\": "src/"
+        }
+    }
+}
