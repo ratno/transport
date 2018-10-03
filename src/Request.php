@@ -38,7 +38,7 @@ class Request
             }
         }
 
-        $baseSignature = $requestSignature->createSignatureBase($this->method, $url, $params);
+        $baseSignature = $requestSignature->createSignatureBase($method, $url, $params);
         $signature     = $requestSignature->createSignature($baseSignature, $this->key, $this->secret);
 
         $params_string = $requestSignature->normalizeParams($params) . '&auth_signature=' . $signature;
