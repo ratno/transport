@@ -50,8 +50,10 @@ class Request
         if($method == "GET") {
             $result = $client->request($method, $url ."?". $params_string);
         } else {
+            $params['auth_signature'] = $signature;
+
             $result = $client->request($method, $url, [
-                'form_params' => explode("&",$params_string)
+                'form_params' => $params
             ]);
         }
 
