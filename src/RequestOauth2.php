@@ -30,6 +30,11 @@ class RequestOauth2
             && $data["tiketux"]["status"] == "OK") {
 
             return $data["tiketux"]["result"]["access_token"];
+        } elseif(array_key_exists("whitelabel",$data)
+            && array_key_exists("status",$data["whitelabel"])
+            && $data["whitelabel"]["status"] == "OK") {
+
+            return $data["whitelabel"]["result"]["access_token"];
         }
 
         return "";
