@@ -33,6 +33,9 @@ class Request
         $params['auth_nonce']	  	= $requestSignature->createNonce(true);
         $params['auth_timestamp'] 	= time();
         $params['auth_client_id'] 	= $this->client_id;
+        if($this->key <> $this->client_id) {
+            $params['auth_access_token'] = $this->key;
+        }
 
         if(count($request_params)) {
             foreach($request_params as $key_param => $value_param) {
