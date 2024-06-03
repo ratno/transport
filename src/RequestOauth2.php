@@ -93,7 +93,7 @@ class RequestOauth2
 
     }
 
-    protected function call($method, $url, $request_params = [], $timeout = 0)
+    protected function call($method, $url, $request_params = [], $timeout = 0, $option = null)
     {
         $client = new \GuzzleHttp\Client();
         $error = null;
@@ -107,8 +107,14 @@ class RequestOauth2
                 ]);
 
             } else {
+                if(!empty($option['json'])) {
+                    $data = 'json';
+                } else {
+                    $data = 'form_params';
+                }
+
                 $result = $client->request($method, $url, [
-                    'form_params' => $request_params,
+                    $data => $request_params,
                     'headers' => ['Authorization' => 'Bearer ' . $this->access_token],
                     'timeout' => $timeout,
                     'connect_timeout' => $timeout
@@ -171,9 +177,9 @@ class RequestOauth2
         return $this->call("GET", $this->base_url . $endpoint_url, $request_params);
     }
 
-    public function post($endpoint_url,$request_params = [])
+    public function post($endpoint_url,$request_params = [], $option = null)
     {
-        return $this->call("POST", $this->base_url . $endpoint_url, $request_params);
+        return $this->call("POST", $this->base_url . $endpoint_url, $request_params, '0', $option);
     }
 
     public function getWithTimeout($endpoint_url,$request_params = [], $timeout = 60)
