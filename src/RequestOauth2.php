@@ -101,7 +101,10 @@ class RequestOauth2
         try{
             if($method == "GET") {
                 $result = $client->request($method, $url ."?". http_build_query($request_params),[
-                    'headers' => ['Authorization' => 'Bearer ' . $this->access_token],
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $this->access_token,
+                        'random-user-id' => $this->userId()
+                    ],
                     'timeout' => $timeout,
                     'connect_timeout' => $timeout
                 ]);
@@ -115,7 +118,10 @@ class RequestOauth2
 
                 $result = $client->request($method, $url, [
                     $data => $request_params,
-                    'headers' => ['Authorization' => 'Bearer ' . $this->access_token],
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $this->access_token,
+                        'random-user-id' => $this->userId()
+                    ],
                     'timeout' => $timeout,
                     'connect_timeout' => $timeout
                 ]);
@@ -170,6 +176,23 @@ class RequestOauth2
         }
 
         return $result->getBody()->getContents();
+    }
+    
+    protected function userId(){
+
+        if(!function_exists('session')){
+            return null;
+        }
+
+        $session_user_id =  session('session_user_id');
+
+        if(empty($session_user_id)){
+            $random_id = bin2hex(random_bytes(8));
+            $session_user_id = date('Ymdhis').''.$random_id;
+            session(['session_user_id' => $session_user_id]);
+        }
+
+        return $session_user_id;
     }
 
     public function get($endpoint_url,$request_params = [])
