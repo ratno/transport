@@ -98,12 +98,19 @@ class RequestOauth2
         $client = new \GuzzleHttp\Client();
         $error = null;
 
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        } else {
+            $user_agent = '-';
+        }
+
         try{
             if($method == "GET") {
                 $result = $client->request($method, $url ."?". http_build_query($request_params),[
                     'headers' => [
                         'Authorization' => 'Bearer ' . $this->access_token,
-                        'random-user-id' => $this->userId()
+                        'random-user-id' => $this->userId(),
+                        'asmat-user-agent' => $user_agent,
                     ],
                     'timeout' => $timeout,
                     'connect_timeout' => $timeout
