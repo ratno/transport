@@ -128,7 +128,8 @@ class RequestOauth2
                     $data => $request_params,
                     'headers' => [
                         'Authorization' => 'Bearer ' . $this->access_token,
-                        'random-user-id' => $this->userId()
+                        'random-user-id' => $this->userId(),
+                        'asmat-user-agent' => $user_agent
                     ],
                     'timeout' => $timeout,
                     'connect_timeout' => $timeout
