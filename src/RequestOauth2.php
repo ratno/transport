@@ -93,7 +93,7 @@ class RequestOauth2
 
     }
 
-    protected function call($method, $url, $request_params = [], $timeout = 0, $option = null)
+    protected function call($method, $url, $request_params = [], $timeout = 0, $option = null, $access_id='')
     {
         $client = new \GuzzleHttp\Client();
         $error = null;
@@ -111,6 +111,7 @@ class RequestOauth2
                         'Authorization' => 'Bearer ' . $this->access_token,
                         'random-user-id' => $this->userId(),
                         'asmat-user-agent' => $user_agent,
+                        'access-id' => $access_id
                     ],
                     'timeout' => $timeout,
                     'connect_timeout' => $timeout
@@ -127,7 +128,8 @@ class RequestOauth2
                     $data => $request_params,
                     'headers' => [
                         'Authorization' => 'Bearer ' . $this->access_token,
-                        'random-user-id' => $this->userId()
+                        'random-user-id' => $this->userId(),
+                        'asmat-user-agent' => $user_agent
                     ],
                     'timeout' => $timeout,
                     'connect_timeout' => $timeout
@@ -202,23 +204,23 @@ class RequestOauth2
         return $session_user_id;
     }
 
-    public function get($endpoint_url,$request_params = [])
+    public function get($endpoint_url,$request_params = [], $access_id='')
     {
-        return $this->call("GET", $this->base_url . $endpoint_url, $request_params);
+        return $this->call("GET", $this->base_url . $endpoint_url, $request_params, '0', null, $access_id);
     }
 
-    public function post($endpoint_url,$request_params = [], $option = null)
+    public function post($endpoint_url,$request_params = [], $option = null, $access_id='')
     {
-        return $this->call("POST", $this->base_url . $endpoint_url, $request_params, '0', $option);
+        return $this->call("POST", $this->base_url . $endpoint_url, $request_params, '0', $option, $access_id);
     }
 
-    public function getWithTimeout($endpoint_url,$request_params = [], $timeout = 60)
+    public function getWithTimeout($endpoint_url,$request_params = [], $timeout = 60, $access_id='')
     {
-        return $this->call("GET", $this->base_url . $endpoint_url, $request_params, $timeout);
+        return $this->call("GET", $this->base_url . $endpoint_url, $request_params, $timeout, null, $access_id);
     }
 
-    public function postWithTimeout($endpoint_url,$request_params = [], $timeout = 60)
+    public function postWithTimeout($endpoint_url,$request_params = [], $timeout = 60, $access_id='')
     {
-        return $this->call("POST", $this->base_url . $endpoint_url, $request_params, $timeout);
+        return $this->call("POST", $this->base_url . $endpoint_url, $request_params, $timeout, null, $access_id);
     }
 }
